@@ -69,6 +69,7 @@ variable "postgresql_multi_az" {
   description = "Whether the RDS instance should have multi-AZ turned on. Default is false"
 }
 variable "postgresql_port" {
+  type        = number
   default     = 5432
   description = "The port PostgreSQL should listen on in the RDS instance"
 }
