@@ -31,7 +31,7 @@ resource "aws_db_instance" "main" {
 
 resource "aws_db_parameter_group" "main" {
   name   = var.postgresql_name
-  family = "postgres${element(split(".", var.postgresql_version), 0)}"
+  family = length(var.postgresql_parameter_group_family) > 0 ? var.postgresql_parameter_group_family : "postgres${element(split(".", var.postgresql_version), 0)}"
   tags = {
     Name            = var.postgresql_name
     OwnerList       = var.postgresql_owner
