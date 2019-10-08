@@ -96,3 +96,8 @@ variable "postgresql_backup_window" {
   default     = "03:30-05:00"
   description = "Window in which instance snapshots will be created as backups"
 }
+variable "postgresql_parameter_group_family" {
+  type        = string
+  default     = ""
+  description = "The family for the PostgreSQL instance's parameter group. Is usually tied to the PostgreSQL version. If set to blank string, module will use the first part of the PostgreSQL version to determine the name of the family"
+}
