@@ -1,0 +1,97 @@
+variable "postgresql_name" {
+  type        = string
+  description = "Name to be given to the PostgreSQL RDS instance"
+}
+variable "postgresql_db_name" {
+  type        = string
+  description = "Name of the database to create in the RDS instance once it is up"
+}
+variable "postgresql_owner" {
+  type        = string
+  description = "Alphabetically ordered comma separated list of Harvest codes of the clients that own this resource"
+}
+variable "postgresql_env" {
+  type        = string
+  description = "Alphabetically ordered comma separated list of environments this resource is part of"
+}
+variable "postgresql_end_date" {
+  type        = string
+  description = "ISO-8601 date of expiry for resource"
+}
+variable "postgresql_project" {
+  type        = string
+  description = "Alphabetically ordered comma separated list of Harvest codes for project IDs resource is part of"
+}
+variable "postgresql_version" {
+  type        = string
+  description = "The PostgreSQL version for the RDS instance"
+}
+variable "postgresql_instance_class" {
+  type        = string
+  description = "The instance type of the RDS instance"
+}
+variable "postgresql_allocated_storage" {
+  type        = string
+  description = "The amount of storage to allocate to the RDS instance in GBs"
+}
+variable "postgresql_storage_type" {
+  type        = string
+  description = "Storage type for the RDS instance. Can be 'gp2', 'standard', 'io1'"
+}
+variable "postgresql_username" {
+  type        = string
+  description = "The PostgreSQL superuser to create once instance is up"
+}
+variable "postgresql_password" {
+  type        = string
+  description = "The password for the created PostgreSQL superuser"
+}
+variable "postgresql_vpc_id" {
+  type        = string
+  description = "The VPC to place the PostgreSQL RDS instance"
+}
+variable "postgresql_firewall_rule_ingress_cidr_blocks" {
+  type        = list(string)
+  description = "CIDR blocks to allow to access the PostgreSQL instance"
+}
+variable "postgresql_subnet_ids" {
+  type        = list(string)
+  description = "The subnet IDs to place the PostgreSQL instance's subnet group in"
+}
+variable "postgresql_deletion_protection" {
+  type        = bool
+  default     = true
+  description = "Whether to protect the RDS instance from deletion. Default is true"
+}
+variable "postgresql_multi_az" {
+  type        = bool
+  default     = false
+  description = "Whether the RDS instance should have multi-AZ turned on. Default is false"
+}
+variable "postgresql_port" {
+  default     = 5432
+  description = "The port PostgreSQL should listen on in the RDS instance"
+}
+variable "postgresql_copy_tags_to_snapshot" {
+  type        = bool
+  default     = true
+  description = "Whether to copy tags on the RDS instance to its snapshots. Default is true"
+}
+variable "postgresql_domain_names" {
+  type        = list(string)
+  description = "The domain name to assign to the RDS instance (without the zone name)"
+}
+variable "postgresql_domain_zone_name" {
+  type        = string
+  description = "The domain zone the RDS instance's domain should be part of"
+}
+variable "postgresql_backup_retention_period" {
+  type        = number
+  default     = 35
+  description = "Number of days to retain snapshots after they're created"
+}
+variable "postgresql_backup_window" {
+  type        = string
+  default     = "03:30-05:00"
+  description = "Window in which instance snapshots will be created as backups"
+}
