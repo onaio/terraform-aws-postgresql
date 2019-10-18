@@ -81,10 +81,12 @@ variable "postgresql_copy_tags_to_snapshot" {
 variable "postgresql_domain_names" {
   type        = list(string)
   description = "The domain name to assign to the RDS instance (without the zone name)"
+  default     = []
 }
 variable "postgresql_domain_zone_name" {
   type        = string
   description = "The domain zone the RDS instance's domain should be part of"
+  default     = ""
 }
 variable "postgresql_backup_retention_period" {
   type        = number
