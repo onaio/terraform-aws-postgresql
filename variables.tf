@@ -101,3 +101,33 @@ variable "postgresql_parameter_group_family" {
   default     = ""
   description = "The family for the PostgreSQL instance's parameter group. Is usually tied to the PostgreSQL version. If set to blank string, module will use the first part of the PostgreSQL version to determine the name of the family"
 }
+variable "postgresql_alarm_connections_evaluation_periods" {
+  type        = string
+  default     = "1"
+  description = "The number of periods over which data is compared to the specified threshold"
+}
+variable "postgresql_alarm_connections_period" {
+  type        = string
+  default     = "60"
+  description = "The period in seconds over which the average operation is applied"
+}
+variable "postgresql_alarm_connections_threshold" {
+  type        = number
+  default     = 120
+  description = "The threshold of database connections above which an alarm will be raised"
+}
+variable "postgresql_alarm_alarm_actions" {
+  type        = list(string)
+  default     = []
+  description = "The list of actions to execute when this alarm transitions into an ALARM state from any other state. Each action is specified as an Amazon Resource Name (ARN)."
+}
+variable "postgresql_alarm_insufficient_data_actions" {
+  type        = list(string)
+  default     = []
+  description = "The list of actions to execute when this alarm transitions into an INSUFFICIENT_DATA state from any other state. Each action is specified as an Amazon Resource Name (ARN)."
+}
+variable "postgresql_alarm_ok_actions" {
+  type        = list(string)
+  default     = []
+  description = "The list of actions to execute when this alarm transitions into an OK state from any other state. Each action is specified as an Amazon Resource Name (ARN)."
+}
