@@ -52,3 +52,16 @@ resource "aws_kms_key" "main" {
   }
 }
 
+resource "aws_cloudwatch_metric_alarm" "db-connections" {
+  alarm_name                = "rds-${var.postgresql_name}-connections"
+  comparison_operator       = "GreaterThanThreshold"
+  evaluation_periods        = var.postgresql_alarm_connections_evaluation_periods
+  metric_name               = "DatabaseConnections"
+  namespace                 = "AWS/RDS"
+  period                    = var.postgresql_alarm_connections_period
+  statistic                 = "Average"
+  threshold                 = var.postgresql_alarm_connections_threshold
+  alarm_actions             = var.postgresql_alarm_alarm_actions
+  ok_actions                = var.postgresql_alarm_ok_actions
+  insufficient_data_actions = var.postgresql_alarm_insufficient_data_actions
+}
