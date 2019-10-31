@@ -64,4 +64,8 @@ resource "aws_cloudwatch_metric_alarm" "db-connections" {
   alarm_actions             = var.postgresql_alarm_alarm_actions
   ok_actions                = var.postgresql_alarm_ok_actions
   insufficient_data_actions = var.postgresql_alarm_insufficient_data_actions
+
+  dimensions = {
+    DBInstanceIdentifier = aws_db_instance.main.id
+  }
 }
