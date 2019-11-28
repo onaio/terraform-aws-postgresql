@@ -1,4 +1,5 @@
 resource "aws_db_instance" "main" {
+  apply_immediately         = var.postgresql_apply_immediately
   identifier                = var.postgresql_name
   allocated_storage         = var.postgresql_allocated_storage
   storage_type              = var.postgresql_storage_type
