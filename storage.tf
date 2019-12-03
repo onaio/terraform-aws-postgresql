@@ -33,6 +33,32 @@ resource "aws_db_instance" "main" {
 resource "aws_db_parameter_group" "main" {
   name   = var.postgresql_name
   family = length(var.postgresql_parameter_group_family) > 0 ? var.postgresql_parameter_group_family : "postgres${element(split(".", var.postgresql_version), 0)}"
+
+  parameter {
+    name  = "track_activity_query_size"
+    value = var.postgresql_track_activity_query_size
+  }
+
+  parameter {
+    name  = "pg_stat_statements.max"
+    value = var.postgresql_pg_stat_statements_max
+  }
+
+  parameter {
+    name  = "pg_stat_statements.track"
+    value = var.postgresql_pg_stat_statements_track
+  }
+
+  parameter {
+    name  = "pg_stat_statements.track_utility"
+    value = var.postgresql_pg_stat_statements_track_utility
+  }
+
+  parameter {
+    name  = "pg_stat_statements.save"
+    value = var.postgresql_pg_stat_statements_save
+  }
+
   tags = {
     Name            = var.postgresql_name
     OwnerList       = var.postgresql_owner
