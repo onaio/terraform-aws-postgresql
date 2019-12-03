@@ -123,6 +123,26 @@ variable "postgresql_track_activity_query_size" {
   default     = 1024
   description = "The number of bytes reserved to track the currently executing command for each active session"
 }
+variable "postgresql_pg_stat_statements_max" {
+  type        = number
+  default     = 5000
+  description = "The maximum number of statements tracked by the pg_stat_statements module"
+}
+variable "pg_stat_statements_track" {
+  type        = string
+  default     = "top"
+  description = "Controls which statements are counted by the pg_stat_statements module"
+}
+variable "postgresql_pg_stat_statements_track_utility" {
+  type        = bool
+  default     = true
+  description = "Controls whether utility commands are tracked by the pg_stat_statements module"
+}
+variable "pg_stat_statements_save" {
+  type        = bool
+  default     = true
+  description = "Specifies whether to save statement statistics tracked by the pg_stat_statements module across server shutdowns"
+}
 variable "postgresql_alarm_alarm_actions" {
   type        = list(string)
   default     = []

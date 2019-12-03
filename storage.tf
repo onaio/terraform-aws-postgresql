@@ -31,8 +31,12 @@ resource "aws_db_instance" "main" {
 }
 
 resource "aws_db_parameter_group" "main" {
-  name                        = var.postgresql_name
-  track_activity_query_size   = var.postgresql_track_activity_query_size
+  name                              = var.postgresql_name
+  track_activity_query_size         = var.postgresql_track_activity_query_size
+  pg_stat_statements.max            = var.postgresql_pg_stat_statements_max
+  pg_stat_statements.track          = var.postgresql_pg_stat_statements_track
+  pg_stat_statements.track_utility  = var.postgresql_pg_stat_statements_track_utility
+  pg_stat_statements.save           = var.postgresql_pg_stat_statements_save
   family = length(var.postgresql_parameter_group_family) > 0 ? var.postgresql_parameter_group_family : "postgres${element(split(".", var.postgresql_version), 0)}"
   tags = {
     Name            = var.postgresql_name
