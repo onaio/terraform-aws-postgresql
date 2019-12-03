@@ -118,6 +118,11 @@ variable "postgresql_alarm_connections_threshold" {
   default     = 120
   description = "The threshold of database connections above which an alarm will be raised"
 }
+variable "postgresql_track_activity_query_size" {
+  type        = number
+  default     = 1024
+  description = "The number of bytes reserved to track the currently executing command for each active session"
+}
 variable "postgresql_alarm_alarm_actions" {
   type        = list(string)
   default     = []
