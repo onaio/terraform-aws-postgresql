@@ -128,7 +128,7 @@ variable "postgresql_pg_stat_statements_max" {
   default     = 5000
   description = "The maximum number of statements tracked by the pg_stat_statements module"
 }
-variable "pg_stat_statements_track" {
+variable "postgresql_pg_stat_statements_track" {
   type        = string
   default     = "top"
   description = "Controls which statements are counted by the pg_stat_statements module"
@@ -138,7 +138,7 @@ variable "postgresql_pg_stat_statements_track_utility" {
   default     = true
   description = "Controls whether utility commands are tracked by the pg_stat_statements module"
 }
-variable "pg_stat_statements_save" {
+variable "postgresql_pg_stat_statements_save" {
   type        = bool
   default     = true
   description = "Specifies whether to save statement statistics tracked by the pg_stat_statements module across server shutdowns"
