@@ -47,11 +47,10 @@ resource "aws_db_subnet_group" "main" {
 }
 
 resource "aws_route53_record" "main" {
-  zone_id = data.aws_route53_zone.main.zone_id
+  zone_id = data.aws_route53_zone.main[0].zone_id
   count   = length(var.postgresql_domain_names)
   name    = element(var.postgresql_domain_names, count.index)
   type    = "CNAME"
   ttl     = "300"
   records = [aws_db_instance.main.address]
 }
-
