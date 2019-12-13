@@ -163,3 +163,8 @@ variable "postgresql_apply_immediately" {
   default     = false
   description = "Whether to apply RDS changes immediately or on the next maintenance window."
 }
+variable "postgresql_publicly_accessible" {
+  type        = bool
+  default     = false
+  description = "Whether RDS should be publicly accessible."
+}

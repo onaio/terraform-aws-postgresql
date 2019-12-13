@@ -21,6 +21,7 @@ resource "aws_db_instance" "main" {
   final_snapshot_identifier = var.postgresql_name
   backup_retention_period   = var.postgresql_backup_retention_period
   backup_window             = var.postgresql_backup_window
+  publicly_accessible       = var.postgresql_publicly_accessible
   tags = {
     Name            = var.postgresql_name
     OwnerList       = var.postgresql_owner
