@@ -36,28 +36,33 @@ resource "aws_db_parameter_group" "main" {
   family = length(var.postgresql_parameter_group_family) > 0 ? var.postgresql_parameter_group_family : "postgres${element(split(".", var.postgresql_version), 0)}"
 
   parameter {
-    name  = "track_activity_query_size"
-    value = var.postgresql_track_activity_query_size
+    name         = "track_activity_query_size"
+    value        = var.postgresql_track_activity_query_size
+    apply_method = var.postgresql_parameter_group_apply_method
   }
 
   parameter {
-    name  = "pg_stat_statements.max"
-    value = var.postgresql_pg_stat_statements_max
+    name         = "pg_stat_statements.max"
+    value        = var.postgresql_pg_stat_statements_max
+    apply_method = var.postgresql_parameter_group_apply_method
   }
 
   parameter {
-    name  = "pg_stat_statements.track"
-    value = var.postgresql_pg_stat_statements_track
+    name         = "pg_stat_statements.track"
+    value        = var.postgresql_pg_stat_statements_track
+    apply_method = var.postgresql_parameter_group_apply_method
   }
 
   parameter {
-    name  = "pg_stat_statements.track_utility"
-    value = var.postgresql_pg_stat_statements_track_utility
+    name         = "pg_stat_statements.track_utility"
+    value        = var.postgresql_pg_stat_statements_track_utility
+    apply_method = var.postgresql_parameter_group_apply_method
   }
 
   parameter {
-    name  = "pg_stat_statements.save"
-    value = var.postgresql_pg_stat_statements_save
+    name         = "pg_stat_statements.save"
+    value        = var.postgresql_pg_stat_statements_save
+    apply_method = var.postgresql_parameter_group_apply_method
   }
 
   tags = {
