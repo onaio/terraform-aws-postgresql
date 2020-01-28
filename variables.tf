@@ -170,6 +170,6 @@ variable "postgresql_publicly_accessible" {
 }
 variable "postgresql_parameter_group_apply_method" {
   type        = string
-  default     = "immediate"
+  default     = "pending-reboot"
   description = "Can be either 'immediate' or 'pending-reboot'. Specifies when the parameter group parameters should be applied to the database."
 }
