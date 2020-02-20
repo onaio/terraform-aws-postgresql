@@ -31,11 +31,13 @@ variable "postgresql_instance_class" {
   description = "The instance type of the RDS instance"
 }
 variable "postgresql_allocated_storage" {
-  type        = string
+  type        = number
+  default     = 0
   description = "The amount of storage to allocate to the RDS instance in GBs"
 }
 variable "postgresql_storage_type" {
   type        = string
+  default     = "gp2"
   description = "Storage type for the RDS instance. Can be 'gp2', 'standard', 'io1'"
 }
 variable "postgresql_username" {
