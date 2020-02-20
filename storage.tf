@@ -1,4 +1,6 @@
-resource "aws_db_instance" "main" {
+resource "aws_db_instance" "blank-database" {
+  count = length(var.postgresql_source_snapshot_identifier) == 0 ? 1 : 0
+
   apply_immediately         = var.postgresql_apply_immediately
   identifier                = var.postgresql_name
   allocated_storage         = var.postgresql_allocated_storage
@@ -21,6 +23,36 @@ resource "aws_db_instance" "main" {
   final_snapshot_identifier = var.postgresql_name
   backup_retention_period   = var.postgresql_backup_retention_period
   backup_window             = var.postgresql_backup_window
+  publicly_accessible       = var.postgresql_publicly_accessible
+  tags = {
+    Name            = var.postgresql_name
+    OwnerList       = var.postgresql_owner
+    EnvironmentList = var.postgresql_env
+    ProjectList     = var.postgresql_project
+    EndDate         = var.postgresql_end_date
+  }
+}
+
+resource "aws_db_instance" "from-snapshot" {
+  count = length(var.postgresql_source_snapshot_identifier) == 0 ? 0 : 1
+
+  apply_immediately         = var.postgresql_apply_immediately
+  identifier                = var.postgresql_name
+  storage_type              = var.postgresql_storage_type
+  instance_class            = var.postgresql_instance_class
+  name                      = var.postgresql_db_name
+  username                  = var.postgresql_username
+  password                  = var.postgresql_password
+  parameter_group_name      = aws_db_parameter_group.main.name
+  db_subnet_group_name      = aws_db_subnet_group.main.name
+  deletion_protection       = var.postgresql_deletion_protection
+  multi_az                  = var.postgresql_multi_az
+  port                      = var.postgresql_port
+  storage_encrypted         = true
+  kms_key_id                = aws_kms_key.main.arn
+  vpc_security_group_ids    = [aws_security_group.firewall_rule.id]
+  snapshot_identifier       = var.postgresql_source_snapshot_identifier
+  skip_final_snapshot       = true
   publicly_accessible       = var.postgresql_publicly_accessible
   tags = {
     Name            = var.postgresql_name

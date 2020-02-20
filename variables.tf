@@ -173,3 +173,8 @@ variable "postgresql_parameter_group_apply_method" {
   default     = "pending-reboot"
   description = "Can be either 'immediate' or 'pending-reboot'. Specifies when the parameter group parameters should be applied to the database."
 }
+variable "postgresql_source_snapshot_identifier" {
+  type        = string
+  default     = ""
+  description = "This is the snapshot id. It would normally be found on the AWS console. Specifies whether or not to create this database from a snapshot."
+}
