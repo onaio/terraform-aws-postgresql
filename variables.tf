@@ -31,11 +31,13 @@ variable "postgresql_instance_class" {
   description = "The instance type of the RDS instance"
 }
 variable "postgresql_allocated_storage" {
-  type        = string
+  type        = number
+  default     = 0
   description = "The amount of storage to allocate to the RDS instance in GBs"
 }
 variable "postgresql_storage_type" {
   type        = string
+  default     = "gp2"
   description = "Storage type for the RDS instance. Can be 'gp2', 'standard', 'io1'"
 }
 variable "postgresql_username" {
@@ -172,4 +174,9 @@ variable "postgresql_parameter_group_apply_method" {
   type        = string
   default     = "pending-reboot"
   description = "Can be either 'immediate' or 'pending-reboot'. Specifies when the parameter group parameters should be applied to the database."
+}
+variable "postgresql_source_snapshot_identifier" {
+  type        = string
+  default     = ""
+  description = "This is the snapshot id. It would normally be found on the AWS console. Specifies whether or not to create this database from a snapshot."
 }
