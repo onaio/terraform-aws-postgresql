@@ -30,6 +30,7 @@ resource "aws_security_group" "firewall_rule" {
     EnvironmentList = var.postgresql_env
     EndDate         = var.postgresql_end_date
     ProjectList     = var.postgresql_project
+    DeploymentType  = var.postgresql_deployment_type
   }
 }
 
@@ -42,6 +43,7 @@ resource "aws_db_subnet_group" "main" {
     OwnerList       = var.postgresql_owner
     EnvironmentList = var.postgresql_env
     ProjectList     = var.postgresql_project
+    DeploymentType  = var.postgresql_deployment_type
     EndDate         = var.postgresql_end_date
   }
 }

@@ -29,6 +29,7 @@ resource "aws_db_instance" "blank-database" {
     OwnerList       = var.postgresql_owner
     EnvironmentList = var.postgresql_env
     ProjectList     = var.postgresql_project
+    DeploymentType  = var.postgresql_deployment_type
     EndDate         = var.postgresql_end_date
   }
 }
@@ -56,6 +57,7 @@ resource "aws_db_instance" "from-snapshot" {
     OwnerList       = var.postgresql_owner
     EnvironmentList = var.postgresql_env
     ProjectList     = var.postgresql_project
+    DeploymentType  = var.postgresql_deployment_type
     EndDate         = var.postgresql_end_date
   }
 }
@@ -99,6 +101,7 @@ resource "aws_db_parameter_group" "main" {
     OwnerList       = var.postgresql_owner
     EnvironmentList = var.postgresql_env
     ProjectList     = var.postgresql_project
+    DeploymentType  = var.postgresql_deployment_type
     EndDate         = var.postgresql_end_date
   }
 }
@@ -110,6 +113,7 @@ resource "aws_kms_key" "main" {
     OwnerList       = var.postgresql_owner
     EnvironmentList = var.postgresql_env
     ProjectList     = var.postgresql_project
+    DeploymentType  = var.postgresql_deployment_type
     EndDate         = var.postgresql_end_date
   }
 }

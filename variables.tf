@@ -22,6 +22,11 @@ variable "postgresql_project" {
   type        = string
   description = "Alphabetically ordered comma separated list of Harvest codes for project IDs resource is part of"
 }
+variable "postgresql_deployment_type" {
+  type        = string
+  default     = "vm"
+  description = "The deployment type the resource is part of."
+}
 variable "postgresql_version" {
   type        = string
   description = "The PostgreSQL version for the RDS instance"
