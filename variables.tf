@@ -185,3 +185,7 @@ variable "postgresql_source_snapshot_identifier" {
   default     = ""
   description = "This is the snapshot id. It would normally be found on the AWS console. Specifies whether or not to create this database from a snapshot."
 }
+variable "postgresql_storage_encrypted" {
+  type    = bool
+  default = true
+}
