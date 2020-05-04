@@ -17,7 +17,7 @@ resource "aws_db_instance" "blank-database" {
   multi_az                  = var.postgresql_multi_az
   port                      = var.postgresql_port
   copy_tags_to_snapshot     = var.postgresql_copy_tags_to_snapshot
-  storage_encrypted         = true
+  storage_encrypted         = var.postgresql_storage_encrypted
   kms_key_id                = aws_kms_key.main.arn
   vpc_security_group_ids    = [aws_security_group.firewall_rule.id]
   final_snapshot_identifier = var.postgresql_name
@@ -46,7 +46,7 @@ resource "aws_db_instance" "from-snapshot" {
   deletion_protection    = var.postgresql_deletion_protection
   multi_az               = var.postgresql_multi_az
   port                   = var.postgresql_port
-  storage_encrypted      = true
+  storage_encrypted      = var.postgresql_storage_encrypted
   kms_key_id             = aws_kms_key.main.arn
   vpc_security_group_ids = [aws_security_group.firewall_rule.id]
   snapshot_identifier    = var.postgresql_source_snapshot_identifier
