@@ -205,8 +205,3 @@ variable "postgresql_replicate_source_db" {
   default     = ""
   description = "The identifier of another Amazon RDS Database to replicate (if replicating within a single region) or Amazon Resource Name (ARN) of the Amazon RDS Database to replicate (if replicating cross-region)."
 }
-variable "postgresql_aws_kms_key" {
-  type        = string
-  default     = ""
-  description = "KMS encryption key specified as an Amazon Resource Name (ARN) . If creating an encrypted replica, set this value to the destination KMS ARN."
-}
