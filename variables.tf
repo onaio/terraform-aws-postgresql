@@ -186,6 +186,17 @@ variable "postgresql_source_snapshot_identifier" {
   description = "This is the snapshot id. It would normally be found on the AWS console. Specifies whether or not to create this database from a snapshot."
 }
 variable "postgresql_storage_encrypted" {
-  type    = bool
-  default = true
+  type        = bool
+  default     = true
+  description = "Specifies whether the DB instance is encrypted. Note that if you are creating a cross-region read replica this field is ignored and you should instead declare kms_key_id with a valid ARN. The default is false if not specified."
+}
+variable "postgresql_performance_insights_enabled" {
+  type        = bool
+  default     = false
+  description = "Specifies whether Performance Insights are enabled. Defaults to false."
+}
+variable "postgresql_datapoints_to_alarm" {
+  type        = number
+  default     = null
+  description = "Specifies whether Performance Insights are enabled. Defaults to false."
 }
