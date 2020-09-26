@@ -39,21 +39,22 @@ resource "aws_db_instance" "blank-database" {
 resource "aws_db_instance" "from-snapshot" {
   count = length(var.postgresql_source_snapshot_identifier) == 0 ? 0 : 1
 
-  apply_immediately      = var.postgresql_apply_immediately
-  identifier             = var.postgresql_name
-  storage_type           = var.postgresql_storage_type
-  instance_class         = var.postgresql_instance_class
-  parameter_group_name   = aws_db_parameter_group.main.name
-  db_subnet_group_name   = aws_db_subnet_group.main.name
-  deletion_protection    = var.postgresql_deletion_protection
-  multi_az               = var.postgresql_multi_az
-  port                   = var.postgresql_port
-  storage_encrypted      = var.postgresql_storage_encrypted
-  kms_key_id             = aws_kms_key.main.arn
-  vpc_security_group_ids = [aws_security_group.firewall_rule.id]
-  snapshot_identifier    = var.postgresql_source_snapshot_identifier
-  skip_final_snapshot    = true
-  publicly_accessible    = var.postgresql_publicly_accessible
+  apply_immediately            = var.postgresql_apply_immediately
+  identifier                   = var.postgresql_name
+  storage_type                 = var.postgresql_storage_type
+  instance_class               = var.postgresql_instance_class
+  parameter_group_name         = aws_db_parameter_group.main.name
+  db_subnet_group_name         = aws_db_subnet_group.main.name
+  deletion_protection          = var.postgresql_deletion_protection
+  multi_az                     = var.postgresql_multi_az
+  port                         = var.postgresql_port
+  storage_encrypted            = var.postgresql_storage_encrypted
+  kms_key_id                   = aws_kms_key.main.arn
+  vpc_security_group_ids       = [aws_security_group.firewall_rule.id]
+  snapshot_identifier          = var.postgresql_source_snapshot_identifier
+  skip_final_snapshot          = true
+  publicly_accessible          = var.postgresql_publicly_accessible
+  performance_insights_enabled = var.postgresql_performance_insights_enabled
   tags = {
     Name            = var.postgresql_name
     OwnerList       = var.postgresql_owner
@@ -88,14 +89,24 @@ resource "aws_db_parameter_group" "main" {
 
   parameter {
     name         = "pg_stat_statements.track_utility"
-    value        = var.postgresql_pg_stat_statements_track_utility
+    value        = var.postgresql_pg_stat_statements_track_utility ? 1 : 0
     apply_method = var.postgresql_parameter_group_apply_method
   }
 
   parameter {
     name         = "pg_stat_statements.save"
-    value        = var.postgresql_pg_stat_statements_save
+    value        = var.postgresql_pg_stat_statements_save ? 1 : 0
     apply_method = var.postgresql_parameter_group_apply_method
+  }
+
+  dynamic "parameter" {
+    for_each = var.postgresql_parameters
+
+    content {
+      name         = parameter.value.name
+      value        = parameter.value.value
+      apply_method = var.postgresql_parameter_group_apply_method
+    }
   }
 
   tags = {
