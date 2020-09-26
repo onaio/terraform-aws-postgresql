@@ -26,6 +26,7 @@ resource "aws_db_instance" "blank-database" {
   replicate_source_db          = var.postgresql_replicate_source_db
   publicly_accessible          = var.postgresql_publicly_accessible
   performance_insights_enabled = var.postgresql_performance_insights_enabled
+
   tags = {
     Name            = var.postgresql_name
     OwnerList       = var.postgresql_owner
@@ -55,6 +56,7 @@ resource "aws_db_instance" "from-snapshot" {
   skip_final_snapshot          = true
   publicly_accessible          = var.postgresql_publicly_accessible
   performance_insights_enabled = var.postgresql_performance_insights_enabled
+
   tags = {
     Name            = var.postgresql_name
     OwnerList       = var.postgresql_owner
@@ -62,6 +64,16 @@ resource "aws_db_instance" "from-snapshot" {
     ProjectList     = var.postgresql_project
     DeploymentType  = var.postgresql_deployment_type
     EndDate         = var.postgresql_end_date
+  }
+
+  lifecycle {
+    ignore_changes = [
+      # When creating an RDS instance from a snapshot, it still uses the snapshot's kms_key_id.
+      # There is no way to change it and it will always prompt for recreating the instance
+      # without changing it after a successful apply. See discussion on
+      # https://github.com/terraform-providers/terraform-provider-aws/issues/6063.
+      kms_key_id,
+    ]
   }
 }
 
