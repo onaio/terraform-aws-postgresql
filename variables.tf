@@ -205,3 +205,12 @@ variable "postgresql_replicate_source_db" {
   default     = ""
   description = "The identifier of another Amazon RDS Database to replicate (if replicating within a single region) or Amazon Resource Name (ARN) of the Amazon RDS Database to replicate (if replicating cross-region)."
 }
+
+variable "postgresql_parameters" {
+  type = map(object({
+    name  = string
+    value = any
+  }))
+  default     = {}
+  description = "The map of DB parameters and their values"
+}
