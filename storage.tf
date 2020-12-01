@@ -161,3 +161,58 @@ resource "aws_cloudwatch_metric_alarm" "db-connections" {
     DBInstanceIdentifier = length(var.postgresql_source_snapshot_identifier) == 0 ? aws_db_instance.blank-database[0].id : aws_db_instance.from-snapshot[0].id
   }
 }
+
+resource "aws_cloudwatch_metric_alarm" "cpu_utilization_too_high" {
+  alarm_name          = "rds-${var.postgresql_name}-cpu-utilizations"
+  comparison_operator = "GreaterThanThreshold"
+  evaluation_periods  = 1
+  metric_name         = "CPUUtilization"
+  namespace           = "AWS/RDS"
+  period              = var.postgresql_cpu_utilization_period
+  statistic           = "Average"
+  threshold           = var.postgresql_cpu_utilization_threshold
+  alarm_description   = "Average database CPU utilization too high"
+  alarm_actions       = var.postgresql_alarm_actions
+  ok_actions          = var.postgresql_ok_actions
+
+   dimensions = {
+    DBInstanceIdentifier = length(var.postgresql_source_snapshot_identifier) == 0 ? aws_db_instance.blank-database[0].id : aws_db_instance.from-snapshot[0].id
+  }
+}
+
+resource "aws_cloudwatch_metric_alarm" "free_storage_space_too_low" {
+  alarm_name          = "free_storage_space_threshold"
+  comparison_operator = "LessThanThreshold"
+  evaluation_periods  = "1"
+  metric_name         = "FreeStorageSpace"
+  namespace           = "AWS/RDS"
+  period              = var.postgresql_storage_space_period
+  statistic           = "Average"
+  threshold           = var.postgresql_free_storage_space_threshold
+  alarm_description   = "Average database free storage too low"
+  alarm_actions       = var.postgresql_alarm_actions
+  ok_actions          = var.postgresql_ok_actions
+
+   dimensions = {
+    DBInstanceIdentifier = length(var.postgresql_source_snapshot_identifier) == 0 ? aws_db_instance.blank-database[0].id : aws_db_instance.from-snapshot[0].id
+  }
+}
+
+resource "aws_cloudwatch_metric_alarm" "freeable_memory_too_low" {
+  alarm_name          = "freeable_memory_too_low"
+  comparison_operator = "LessThanThreshold"
+  evaluation_periods  = "1"
+  metric_name         = "FreeableMemory"
+  namespace           = "AWS/RDS"
+  period              = var.postgresql_freeable_memory_period
+  statistic           = "Average"
+  threshold           = var.postgresql_freeable_memory_threshold
+  alarm_description   = "Average database freeable memory over last 10 minutes too low.... this is a test"
+ alarm_actions       = var.postgresql_alarm_actions
+  ok_actions          = var.postgresql_ok_actions
+
+   dimensions = {
+    DBInstanceIdentifier = length(var.postgresql_source_snapshot_identifier) == 0 ? aws_db_instance.blank-database[0].id : aws_db_instance.from-snapshot[0].id
+  }
+}
+

@@ -206,6 +206,59 @@ variable "postgresql_replicate_source_db" {
   description = "The identifier of another Amazon RDS Database to replicate (if replicating within a single region) or Amazon Resource Name (ARN) of the Amazon RDS Database to replicate (if replicating cross-region)."
 }
 
+variable "postgresql_alarm_actions" {
+  type = list(string)
+  description = "List of IDs for cloudwatch actions that should be fired when alarms are raised."
+}
+
+variable "postgresql_ok_actions" {
+  type = list(string)
+  description = "List of IDs for cloudwatch actions that should be fired for ok action."
+}
+
+variable "postgresql_cpu_utilization_threshold" {
+  description = "The maximum percentage of CPU utilization."
+  type        = string
+  default     = 90
+}
+
+variable "postgresql_cpu_utilization_period" {
+  description = "Time associated with CPU utilization statistics"
+  type        = string
+  default     = 600
+  # 10 minutes
+}
+
+variable "postgresql_free_storage_space_threshold" {
+  description = "The minimum amount of available storage space in Byte."
+  type        = string
+  default     = 2000000000
+
+  # 2 Gigabyte in Byte
+}
+
+variable "postgresql_storage_space_period" {
+  description = "Time associated with storage space statistics"
+  type        = string
+  default     = 600
+  # 10 minutes
+}
+
+variable "postgresql_freeable_memory_threshold" {
+  description = "The minimum amount of available random access memory in Byte."
+  type        = string
+  default     = 64000000
+
+  # 64 Megabyte in Byte
+}
+
+variable "postgresql_freeable_memory_period" {
+  description = "Time associated with memory statistics"
+  type        = string
+  default     = 600
+  # 10 minutes
+}
+
 variable "postgresql_parameters" {
   type = map(object({
     name  = string
