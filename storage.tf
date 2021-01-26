@@ -218,9 +218,9 @@ resource "aws_cloudwatch_metric_alarm" "freeable_memory_too_low" {
 }
 
 resource "aws_db_parameter_group" "aws_cloudwatch_logging" {
-  name   = "opensrp-sample"
+  name        = "opensrp-sample"
   description = "OpenSRP sample parameter group"
-  family = "postgres11"
+  family      = "postgres11"
 
   parameter {
     name  = "log_min_duration_statement"
