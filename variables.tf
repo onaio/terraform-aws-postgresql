@@ -207,12 +207,12 @@ variable "postgresql_replicate_source_db" {
 }
 
 variable "postgresql_alarm_actions" {
-  type = list(string)
+  type        = list(string)
   description = "List of IDs for cloudwatch actions that should be fired when alarms are raised."
 }
 
 variable "postgresql_ok_actions" {
-  type = list(string)
+  type        = list(string)
   description = "List of IDs for cloudwatch actions that should be fired for ok action."
 }
 

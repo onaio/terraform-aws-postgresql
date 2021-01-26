@@ -27,6 +27,7 @@ resource "aws_db_instance" "blank-database" {
   publicly_accessible          = var.postgresql_publicly_accessible
   performance_insights_enabled = var.postgresql_performance_insights_enabled
 
+
   tags = {
     Name            = var.postgresql_name
     OwnerList       = var.postgresql_owner
@@ -175,7 +176,7 @@ resource "aws_cloudwatch_metric_alarm" "cpu_utilization_too_high" {
   alarm_actions       = var.postgresql_alarm_actions
   ok_actions          = var.postgresql_ok_actions
 
-   dimensions = {
+  dimensions = {
     DBInstanceIdentifier = length(var.postgresql_source_snapshot_identifier) == 0 ? aws_db_instance.blank-database[0].id : aws_db_instance.from-snapshot[0].id
   }
 }
@@ -193,7 +194,7 @@ resource "aws_cloudwatch_metric_alarm" "free_storage_space_too_low" {
   alarm_actions       = var.postgresql_alarm_actions
   ok_actions          = var.postgresql_ok_actions
 
-   dimensions = {
+  dimensions = {
     DBInstanceIdentifier = length(var.postgresql_source_snapshot_identifier) == 0 ? aws_db_instance.blank-database[0].id : aws_db_instance.from-snapshot[0].id
   }
 }
@@ -208,11 +209,22 @@ resource "aws_cloudwatch_metric_alarm" "freeable_memory_too_low" {
   statistic           = "Average"
   threshold           = var.postgresql_freeable_memory_threshold
   alarm_description   = "Average database freeable memory over last 10 minutes too low.... this is a test"
- alarm_actions       = var.postgresql_alarm_actions
+  alarm_actions       = var.postgresql_alarm_actions
   ok_actions          = var.postgresql_ok_actions
 
-   dimensions = {
+  dimensions = {
     DBInstanceIdentifier = length(var.postgresql_source_snapshot_identifier) == 0 ? aws_db_instance.blank-database[0].id : aws_db_instance.from-snapshot[0].id
+  }
+}
+
+resource "aws_db_parameter_group" "aws_cloudwatch_logging" {
+  name   = "opensrp-sample"
+  description = "OpenSRP sample parameter group"
+  family = "postgres11"
+
+  parameter {
+    name  = "log_min_duration_statement"
+    value = "5000"
   }
 }
 
