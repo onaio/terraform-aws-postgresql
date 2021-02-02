@@ -213,12 +213,14 @@ variable "postgresql_replicate_source_db" {
 
 variable "postgresql_alarm_actions" {
   type        = list(string)
-  description = "List of IDs for cloudwatch actions that should be fired when alarms are raised."
+  description = "The list of actions to execute when this alarm transitions into an ALARM state from any other state. Each action is specified as an Amazon Resource Number (ARN)"
+  default     = []
 }
 
 variable "postgresql_ok_actions" {
   type        = list(string)
   description = "List of IDs for cloudwatch actions that should be fired for ok action."
+  default     = []
 }
 
 variable "postgresql_cpu_utilization_threshold" {
@@ -313,12 +315,6 @@ variable "postgresql_slow_query_alarm_description" {
   type        = string
   description = "The description for the alarm"
   default     = ""
-}
-
-variable "postgresql_slow_query_alarm_action_arns" {
-  type        = list(string)
-  description = "The list of actions to execute when this alarm transitions into an ALARM state from any other state. Each action is specified as an Amazon Resource Number (ARN)"
-  default     = []
 }
 
 variable "postgresql_slow_query_comparison_operator" {

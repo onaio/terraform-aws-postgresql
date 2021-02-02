@@ -224,7 +224,7 @@ resource "aws_cloudwatch_metric_alarm" "freeable_memory_too_low" {
 }
 
 resource "aws_cloudwatch_log_metric_filter" "slow_query_metric_filter" {
-  count = length(var.postgresql_slow_query_alarm_action_arns) == 0 ? 0 : 1
+  count = length(var.postgresql_alarm_actions) == 0 ? 0 : 1
 
   log_group_name = "/aws/rds/instance/${var.postgresql_name}/postgresql"
   name           = var.postgresql_slow_query_metric_filter_name
@@ -237,7 +237,7 @@ resource "aws_cloudwatch_log_metric_filter" "slow_query_metric_filter" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "slow_query_metric_alarm" {
-  count = length(var.postgresql_slow_query_alarm_action_arns) == 0 ? 0 : 1
+  count = length(var.postgresql_alarm_actions) == 0 ? 0 : 1
 
   alarm_name          = var.postgresql_slow_query_alarm_name
   alarm_description   = var.postgresql_slow_query_alarm_description
@@ -248,6 +248,6 @@ resource "aws_cloudwatch_metric_alarm" "slow_query_metric_alarm" {
   period              = var.postgresql_slow_query_period
   threshold           = var.postgresql_slow_query_threshold
   statistic           = var.postgresql_slow_query_statistic
-  alarm_actions       = var.postgresql_slow_query_alarm_action_arns
+  alarm_actions       = var.postgresql_alarm_actions
   tags                = { notification_type = var.postgresql_slow_query_notification_type, severity = var.postgresql_slow_query_severity }
 }
