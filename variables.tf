@@ -150,6 +150,11 @@ variable "postgresql_pg_stat_statements_save" {
   default     = true
   description = "Specifies whether to save statement statistics tracked by the pg_stat_statements module across server shutdowns"
 }
+variable "log_min_duration_statement" {
+  type        = number
+  default     = 5000
+  description = "Sets the minimum execution time above which all statements will be logged"
+}
 variable "postgresql_alarm_alarm_actions" {
   type        = list(string)
   default     = []
@@ -266,4 +271,88 @@ variable "postgresql_parameters" {
   }))
   default     = {}
   description = "The map of DB parameters and their values"
+}
+
+variable "postgresql_slow_query_metric_value" {
+  type        = number
+  description = "The value published to the metric name when a Filter Pattern match occurs"
+  default     = 1
+}
+
+variable "postgresql_slow_query_pattern" {
+  type        = list(string)
+  description = "The terms or pattern to match in your log events to create metrics"
+  default     = ["select", "update"]
+}
+
+variable "postgresql_slow_query_metric_filter_name" {
+  type        = string
+  description = "The descriptive name for the filter . Must be unique within the namespace"
+  default     = "metric-name"
+}
+
+variable "postgresql_slow_query_metric_namespace" {
+  type        = string
+  description = "The descriptive name for the namespace. Namespaces let you group similar metrics"
+  default     = "metric-namespace"
+}
+
+variable "postgresql_slow_query_alarm_name" {
+  type        = string
+  description = "The descriptive name for the alarm. This name must be unique within the user's AWS account"
+  default     = "alarm-name"
+}
+
+variable "postgresql_slow_query_statistic" {
+  type        = string
+  description = "The statistics to applied to the alarm. supported statistics (SampleCount, Average, Sum, Minimum, Maximum)"
+  default     = "Sum"
+}
+
+variable "postgresql_slow_query_alarm_description" {
+  type        = string
+  description = "The description for the alarm"
+  default     = ""
+}
+
+variable "postgresql_slow_query_alarm_action_arns" {
+  type        = list(string)
+  description = "The list of actions to execute when this alarm transitions into an ALARM state from any other state. Each action is specified as an Amazon Resource Number (ARN)"
+  default     = []
+}
+
+variable "postgresql_slow_query_comparison_operator" {
+  type        = string
+  description = "The arithmetic operation to use when comparing the specified Statistic and Threshold. The specified Statistic value is used as the first operand. Either of the following is supported: GreaterThanOrEqualToThreshold, GreaterThanThreshold, LessThanThreshold, LessThanOrEqualToThreshold"
+  default     = "GreaterThanOrEqualToThreshold"
+}
+
+variable "postgresql_slow_query_evaluation_periods" {
+  type        = string
+  description = "The number of periods over which data is compared to the specified threshold"
+  default     = "1"
+}
+
+variable "postgresql_slow_query_period" {
+  type        = string
+  description = "The period in seconds over which the specified statistic is applied"
+  default     = "60"
+}
+
+variable "postgresql_slow_query_threshold" {
+  type        = string
+  description = "The value against which the specified statistic is compared"
+  default     = "0"
+}
+
+variable "postgresql_slow_query_notification_type" {
+  type        = string
+  description = "(optional) The notification type of this alarm. Either of the following is supported: Info, Warning, Error"
+  default     = "Warning"
+}
+
+variable "postgresql_slow_query_severity" {
+  type        = string
+  description = "(optional) The severity of this alarm. Either of the following is supported: Low, Medium, High, Critical"
+  default     = "High"
 }
