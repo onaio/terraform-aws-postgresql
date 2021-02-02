@@ -57,7 +57,8 @@ resource "aws_db_instance" "from-snapshot" {
   skip_final_snapshot          = true
   publicly_accessible          = var.postgresql_publicly_accessible
   performance_insights_enabled = var.postgresql_performance_insights_enabled
-
+  enabled_cloudwatch_logs_exports = ["postgresql"]
+  
   tags = {
     Name            = var.postgresql_name
     OwnerList       = var.postgresql_owner
