@@ -54,5 +54,5 @@ resource "aws_route53_record" "main" {
   name    = element(var.postgresql_domain_names, count.index)
   type    = "CNAME"
   ttl     = "300"
-  records = [length(var.postgresql_source_snapshot_identifier) == 0 ? aws_db_instance.blank-database[0].address : aws_db_instance.from-snapshot[0].address]
+  records = [length(var.postgresql_source_snapshot_identifier) == 0 ? (length(var.postgresql_replicate_source_db) == 0 ? aws_db_instance.blank-database[0].address : aws_db_instance.replica-database[0].address) : aws_db_instance.from-snapshot[0].address]
 }

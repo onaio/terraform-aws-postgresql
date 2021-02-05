@@ -1,5 +1,5 @@
 resource "aws_db_instance" "blank-database" {
-  count = length(var.postgresql_source_snapshot_identifier) == 0 ? 1 : 0
+  count = length(var.postgresql_source_snapshot_identifier) == 0 && length(var.postgresql_replicate_source_db) == 0 ? 1 : 0
 
   apply_immediately               = var.postgresql_apply_immediately
   identifier                      = var.postgresql_name
@@ -76,6 +76,43 @@ resource "aws_db_instance" "from-snapshot" {
       # https://github.com/terraform-providers/terraform-provider-aws/issues/6063.
       kms_key_id,
     ]
+  }
+}
+
+resource "aws_db_instance" "replica-database" {
+  count = length(var.postgresql_replicate_source_db) == 0 ? 0 : 1
+
+  apply_immediately               = var.postgresql_apply_immediately
+  identifier                      = var.postgresql_name
+  allocated_storage               = var.postgresql_allocated_storage
+  storage_type                    = var.postgresql_storage_type
+  engine                          = "postgres"
+  engine_version                  = var.postgresql_version
+  instance_class                  = var.postgresql_instance_class
+  name                            = var.postgresql_db_name
+  username                        = var.postgresql_username
+  parameter_group_name            = aws_db_parameter_group.main.name
+  db_subnet_group_name            = aws_db_subnet_group.main.name
+  deletion_protection             = var.postgresql_deletion_protection
+  multi_az                        = var.postgresql_multi_az
+  port                            = var.postgresql_port
+  copy_tags_to_snapshot           = var.postgresql_copy_tags_to_snapshot
+  storage_encrypted               = var.postgresql_storage_encrypted
+  kms_key_id                      = aws_kms_key.main.arn
+  vpc_security_group_ids          = [aws_security_group.firewall_rule.id]
+  replicate_source_db             = var.postgresql_replicate_source_db
+  publicly_accessible             = var.postgresql_publicly_accessible
+  performance_insights_enabled    = var.postgresql_performance_insights_enabled
+  enabled_cloudwatch_logs_exports = ["postgresql"]
+  skip_final_snapshot             = true
+
+  tags = {
+    Name            = var.postgresql_name
+    OwnerList       = var.postgresql_owner
+    EnvironmentList = var.postgresql_env
+    ProjectList     = var.postgresql_project
+    DeploymentType  = var.postgresql_deployment_type
+    EndDate         = var.postgresql_end_date
   }
 }
 
@@ -166,7 +203,7 @@ resource "aws_cloudwatch_metric_alarm" "db-connections" {
   insufficient_data_actions = var.postgresql_alarm_insufficient_data_actions
 
   dimensions = {
-    DBInstanceIdentifier = length(var.postgresql_source_snapshot_identifier) == 0 ? aws_db_instance.blank-database[0].id : aws_db_instance.from-snapshot[0].id
+    DBInstanceIdentifier = length(var.postgresql_source_snapshot_identifier) == 0 ? (length(var.postgresql_replicate_source_db) == 0 ? aws_db_instance.blank-database[0].id : aws_db_instance.replica-database[0].id) : aws_db_instance.from-snapshot[0].id
   }
 }
 
@@ -184,7 +221,7 @@ resource "aws_cloudwatch_metric_alarm" "cpu_utilization_too_high" {
   ok_actions          = var.postgresql_ok_actions
 
   dimensions = {
-    DBInstanceIdentifier = length(var.postgresql_source_snapshot_identifier) == 0 ? aws_db_instance.blank-database[0].id : aws_db_instance.from-snapshot[0].id
+    DBInstanceIdentifier = length(var.postgresql_source_snapshot_identifier) == 0 ? (length(var.postgresql_replicate_source_db) == 0 ? aws_db_instance.blank-database[0].id : aws_db_instance.replica-database[0].id) : aws_db_instance.from-snapshot[0].id
   }
 }
 
@@ -202,7 +239,7 @@ resource "aws_cloudwatch_metric_alarm" "free_storage_space_too_low" {
   ok_actions          = var.postgresql_ok_actions
 
   dimensions = {
-    DBInstanceIdentifier = length(var.postgresql_source_snapshot_identifier) == 0 ? aws_db_instance.blank-database[0].id : aws_db_instance.from-snapshot[0].id
+    DBInstanceIdentifier = length(var.postgresql_source_snapshot_identifier) == 0 ? (length(var.postgresql_replicate_source_db) == 0 ? aws_db_instance.blank-database[0].id : aws_db_instance.replica-database[0].id) : aws_db_instance.from-snapshot[0].id
   }
 }
 
@@ -220,7 +257,7 @@ resource "aws_cloudwatch_metric_alarm" "freeable_memory_too_low" {
   ok_actions          = var.postgresql_ok_actions
 
   dimensions = {
-    DBInstanceIdentifier = length(var.postgresql_source_snapshot_identifier) == 0 ? aws_db_instance.blank-database[0].id : aws_db_instance.from-snapshot[0].id
+    DBInstanceIdentifier = length(var.postgresql_source_snapshot_identifier) == 0 ? (length(var.postgresql_replicate_source_db) == 0 ? aws_db_instance.blank-database[0].id : aws_db_instance.replica-database[0].id) : aws_db_instance.from-snapshot[0].id
   }
 }
 
