@@ -100,9 +100,11 @@ resource "aws_db_instance" "replica-database" {
   storage_encrypted               = var.postgresql_storage_encrypted
   kms_key_id                      = aws_kms_key.main.arn
   vpc_security_group_ids          = [aws_security_group.firewall_rule.id]
-  replicate_source_db             = var.postgresql_replicate_source_db
+  replicate_source_db             = var.is_promoted_to_standalone ? "" : var.postgresql_replicate_source_db
   publicly_accessible             = var.postgresql_publicly_accessible
   performance_insights_enabled    = var.postgresql_performance_insights_enabled
+  backup_retention_period         = var.standalone_db_enable_backup ? var.postgresql_backup_retention_period : 0
+  backup_window                   = var.standalone_db_enable_backup ? var.postgresql_backup_window : null
   enabled_cloudwatch_logs_exports = ["postgresql"]
   skip_final_snapshot             = true
 
