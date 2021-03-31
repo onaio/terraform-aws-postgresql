@@ -352,3 +352,21 @@ variable "postgresql_slow_query_severity" {
   description = "(optional) The severity of this alarm. Either of the following is supported: Low, Medium, High, Critical"
   default     = "High"
 }
+
+variable "is_promoted_to_standalone" {
+  type        = bool
+  default     = false
+  description = "For replica instance, if enabled it will promote replica to standalone db"
+}
+
+variable "standalone_db_enable_backup" {
+  type        = bool
+  default     = true
+  description = "For replica instance, if enabled will apply backup configs on standalone db"
+}
+
+variable "allow_dns_record_overwrite" {
+  type        = bool
+  default     = false
+  description = "Allow creation of this record in Terraform to overwrite an existing record, if any."
+}
