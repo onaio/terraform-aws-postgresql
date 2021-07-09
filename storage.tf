@@ -18,8 +18,8 @@ resource "aws_db_instance" "blank-database" {
   port                         = var.postgresql_port
   copy_tags_to_snapshot        = var.postgresql_copy_tags_to_snapshot
   storage_encrypted            = var.postgresql_storage_encrypted
-  kms_key_id                   = aws_kms_key.main.arn
-  vpc_security_group_ids       = [aws_security_group.firewall_rule.id]
+  kms_key_id                   = var.postgresql_storage_encrypted? aws_kms_key.main.arn: null
+  vpc_security_group_ids       = distinct(concat([aws_security_group.firewall_rule.id],var.extra_security_groups))
   final_snapshot_identifier    = var.postgresql_name
   backup_retention_period      = var.postgresql_backup_retention_period
   backup_window                = var.postgresql_backup_window
@@ -50,7 +50,7 @@ resource "aws_db_instance" "from-snapshot" {
   multi_az                     = var.postgresql_multi_az
   port                         = var.postgresql_port
   storage_encrypted            = var.postgresql_storage_encrypted
-  kms_key_id                   = aws_kms_key.main.arn
+  kms_key_id                   = var.postgresql_storage_encrypted? aws_kms_key.main.arn: null
   vpc_security_group_ids       = [aws_security_group.firewall_rule.id]
   snapshot_identifier          = var.postgresql_source_snapshot_identifier
   skip_final_snapshot          = true

@@ -214,3 +214,9 @@ variable "postgresql_parameters" {
   default     = {}
   description = "The map of DB parameters and their values"
 }
+
+variable "extra_security_groups"{
+  type = list(string)
+  description = "Extra security groups to add to the RDS instance"
+  default = []
+}
