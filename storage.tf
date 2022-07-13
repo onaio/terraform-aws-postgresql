@@ -8,7 +8,7 @@ resource "aws_db_instance" "blank-database" {
   engine                          = "postgres"
   engine_version                  = var.postgresql_version
   instance_class                  = var.postgresql_instance_class
-  name                            = var.postgresql_db_name
+  db_name                         = var.postgresql_db_name
   username                        = var.postgresql_username
   password                        = var.postgresql_password
   parameter_group_name            = aws_db_parameter_group.main.name
@@ -23,7 +23,7 @@ resource "aws_db_instance" "blank-database" {
   final_snapshot_identifier       = var.postgresql_name
   backup_retention_period         = var.postgresql_backup_retention_period
   backup_window                   = var.postgresql_backup_window
-  replicate_source_db             = length(var.postgresql_source_snapshot_identifier) == 0 && length(var.postgresql_replicate_source_db) == 0 ? var.postgresql_replicate_source_db : null
+  replicate_source_db             = length(var.postgresql_source_snapshot_identifier) == 0 && length(var.postgresql_replicate_source_db) != 0 ? var.postgresql_replicate_source_db : null
   publicly_accessible             = var.postgresql_publicly_accessible
   performance_insights_enabled    = var.postgresql_performance_insights_enabled
   enabled_cloudwatch_logs_exports = ["postgresql"]
@@ -89,7 +89,7 @@ resource "aws_db_instance" "replica-database" {
   engine                          = "postgres"
   engine_version                  = var.postgresql_version
   instance_class                  = var.postgresql_instance_class
-  name                            = var.postgresql_db_name
+  db_name                         = var.postgresql_db_name
   username                        = var.postgresql_username
   parameter_group_name            = aws_db_parameter_group.main.name
   db_subnet_group_name            = aws_db_subnet_group.main.name
