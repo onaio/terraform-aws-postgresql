@@ -1,5 +1,5 @@
 resource "aws_db_instance" "blank-database" {
-  count = length(var.postgresql_source_snapshot_identifier) == 0 && length(var.postgresql_replicate_source_db) == 0 ? 1 : 0
+  count = length(var.postgresql_source_snapshot_identifier) == 0 && var.postgresql_replicate_source_db == null ? 1 : 0
 
   apply_immediately               = var.postgresql_apply_immediately
   identifier                      = var.postgresql_name
@@ -80,7 +80,7 @@ resource "aws_db_instance" "from-snapshot" {
 }
 
 resource "aws_db_instance" "replica-database" {
-  count = length(var.postgresql_replicate_source_db) == 0 ? 0 : 1
+  count = var.postgresql_replicate_source_db == null ? 0 : 1
 
   apply_immediately               = var.postgresql_apply_immediately
   identifier                      = var.postgresql_name
@@ -205,7 +205,7 @@ resource "aws_cloudwatch_metric_alarm" "db-connections" {
   insufficient_data_actions = var.postgresql_alarm_insufficient_data_actions
 
   dimensions = {
-    DBInstanceIdentifier = (length(var.postgresql_source_snapshot_identifier) == 0 && length(var.postgresql_replicate_source_db) == 0) ? aws_db_instance.blank-database[0].id : length(var.postgresql_replicate_source_db) != 0 ? aws_db_instance.replica-database[0].id : aws_db_instance.from-snapshot[0].id
+    DBInstanceIdentifier = (length(var.postgresql_source_snapshot_identifier) == 0 && var.postgresql_replicate_source_db == null) ? aws_db_instance.blank-database[0].id : var.postgresql_replicate_source_db != null ? aws_db_instance.replica-database[0].id : aws_db_instance.from-snapshot[0].id
   }
 }
 
@@ -223,7 +223,7 @@ resource "aws_cloudwatch_metric_alarm" "cpu_utilization_too_high" {
   ok_actions          = var.postgresql_ok_actions
 
   dimensions = {
-    DBInstanceIdentifier = (length(var.postgresql_source_snapshot_identifier) == 0 && length(var.postgresql_replicate_source_db) == 0) ? aws_db_instance.blank-database[0].id : length(var.postgresql_replicate_source_db) != 0 ? aws_db_instance.replica-database[0].id : aws_db_instance.from-snapshot[0].id
+    DBInstanceIdentifier = (length(var.postgresql_source_snapshot_identifier) == 0 && var.postgresql_replicate_source_db == null) ? aws_db_instance.blank-database[0].id : var.postgresql_replicate_source_db != null ? aws_db_instance.replica-database[0].id : aws_db_instance.from-snapshot[0].id
   }
 }
 
@@ -241,7 +241,7 @@ resource "aws_cloudwatch_metric_alarm" "free_storage_space_too_low" {
   ok_actions          = var.postgresql_ok_actions
 
   dimensions = {
-    DBInstanceIdentifier = (length(var.postgresql_source_snapshot_identifier) == 0 && length(var.postgresql_replicate_source_db) == 0) ? aws_db_instance.blank-database[0].id : length(var.postgresql_replicate_source_db) != 0 ? aws_db_instance.replica-database[0].id : aws_db_instance.from-snapshot[0].id
+    DBInstanceIdentifier = (length(var.postgresql_source_snapshot_identifier) == 0 && var.postgresql_replicate_source_db == null) ? aws_db_instance.blank-database[0].id : var.postgresql_replicate_source_db != null ? aws_db_instance.replica-database[0].id : aws_db_instance.from-snapshot[0].id
   }
 }
 
@@ -259,7 +259,7 @@ resource "aws_cloudwatch_metric_alarm" "freeable_memory_too_low" {
   ok_actions          = var.postgresql_ok_actions
 
   dimensions = {
-    DBInstanceIdentifier = (length(var.postgresql_source_snapshot_identifier) == 0 && length(var.postgresql_replicate_source_db) == 0) ? aws_db_instance.blank-database[0].id : length(var.postgresql_replicate_source_db) != 0 ? aws_db_instance.replica-database[0].id : aws_db_instance.from-snapshot[0].id
+    DBInstanceIdentifier = (length(var.postgresql_source_snapshot_identifier) == 0 && var.postgresql_replicate_source_db == null) ? aws_db_instance.blank-database[0].id : var.postgresql_replicate_source_db != null ? aws_db_instance.replica-database[0].id : aws_db_instance.from-snapshot[0].id
   }
 }
 

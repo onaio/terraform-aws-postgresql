@@ -207,7 +207,7 @@ variable "postgresql_datapoints_to_alarm" {
 }
 variable "postgresql_replicate_source_db" {
   type        = string
-  default     = ""
+  default     = null
   description = "The identifier of another Amazon RDS Database to replicate (if replicating within a single region) or Amazon Resource Name (ARN) of the Amazon RDS Database to replicate (if replicating cross-region)."
 }
 
