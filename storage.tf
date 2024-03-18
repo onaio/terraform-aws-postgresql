@@ -82,23 +82,23 @@ resource "aws_db_instance" "from-snapshot" {
 resource "aws_db_instance" "replica-database" {
   count = var.postgresql_replicate_source_db == null ? 0 : 1
 
-  apply_immediately               = var.postgresql_apply_immediately
-  identifier                      = var.postgresql_name
-  allocated_storage               = var.postgresql_allocated_storage
-  storage_type                    = var.postgresql_storage_type
-  engine                          = "postgres"
-  engine_version                  = var.postgresql_version
-  instance_class                  = var.postgresql_instance_class
-  db_name                         = var.postgresql_db_name
-  username                        = var.postgresql_username
-  parameter_group_name            = aws_db_parameter_group.main.name
-  db_subnet_group_name            = aws_db_subnet_group.main.name
-  deletion_protection             = var.postgresql_deletion_protection
-  multi_az                        = var.postgresql_multi_az
-  port                            = var.postgresql_port
-  copy_tags_to_snapshot           = var.postgresql_copy_tags_to_snapshot
-  storage_encrypted               = var.postgresql_storage_encrypted
-  kms_key_id                      = aws_kms_key.main.arn
+  apply_immediately = var.postgresql_apply_immediately
+  identifier        = var.postgresql_name
+  allocated_storage = var.postgresql_allocated_storage
+  storage_type      = var.postgresql_storage_type
+  #  engine                          = "postgres"
+  #  engine_version                  = var.postgresql_version
+  instance_class = var.postgresql_instance_class
+  #  db_name                         = var.postgresql_db_name
+  #  username                        = var.postgresql_username
+  parameter_group_name  = aws_db_parameter_group.main.name
+  db_subnet_group_name  = aws_db_subnet_group.main.name
+  deletion_protection   = var.postgresql_deletion_protection
+  multi_az              = var.postgresql_multi_az
+  port                  = var.postgresql_port
+  copy_tags_to_snapshot = var.postgresql_copy_tags_to_snapshot
+  storage_encrypted     = var.postgresql_storage_encrypted
+  #  kms_key_id                      = aws_kms_key.main.arn
   vpc_security_group_ids          = [aws_security_group.firewall_rule.id]
   replicate_source_db             = var.is_promoted_to_standalone ? "" : var.postgresql_replicate_source_db
   publicly_accessible             = var.postgresql_publicly_accessible
