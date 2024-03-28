@@ -370,3 +370,9 @@ variable "allow_dns_record_overwrite" {
   default     = false
   description = "Allow creation of this record in Terraform to overwrite an existing record, if any."
 }
+
+variable "postgresql_firewall_rule_ingress_security_groups" {
+  type        = list(string)
+  default     = []
+  description = "Security groups to allow to access the PostgreSQL instance"
+}

@@ -4,10 +4,11 @@ resource "aws_security_group" "firewall_rule" {
   vpc_id      = var.postgresql_vpc_id
 
   ingress {
-    from_port   = var.postgresql_port
-    to_port     = var.postgresql_port
-    protocol    = "tcp"
-    cidr_blocks = var.postgresql_firewall_rule_ingress_cidr_blocks
+    from_port       = var.postgresql_port
+    to_port         = var.postgresql_port
+    protocol        = "tcp"
+    security_groups = var.postgresql_firewall_rule_ingress_security_groups
+    cidr_blocks     = var.postgresql_firewall_rule_ingress_cidr_blocks
   }
 
   egress {
