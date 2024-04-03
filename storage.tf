@@ -35,6 +35,7 @@ resource "aws_db_instance" "blank-database" {
     ProjectList     = var.postgresql_project
     DeploymentType  = var.postgresql_deployment_type
     EndDate         = var.postgresql_end_date
+    Group           = "${var.postgresql_project}-${var.postgresql_env}"
   }
 }
 
@@ -66,6 +67,7 @@ resource "aws_db_instance" "from-snapshot" {
     ProjectList     = var.postgresql_project
     DeploymentType  = var.postgresql_deployment_type
     EndDate         = var.postgresql_end_date
+    Group           = "${var.postgresql_project}-${var.postgresql_env}"
   }
 
   lifecycle {
@@ -115,6 +117,7 @@ resource "aws_db_instance" "replica-database" {
     ProjectList     = var.postgresql_project
     DeploymentType  = var.postgresql_deployment_type
     EndDate         = var.postgresql_end_date
+    Group           = "${var.postgresql_project}-${var.postgresql_env}"
   }
 }
 
@@ -175,6 +178,7 @@ resource "aws_db_parameter_group" "main" {
     ProjectList     = var.postgresql_project
     DeploymentType  = var.postgresql_deployment_type
     EndDate         = var.postgresql_end_date
+    Group           = "${var.postgresql_project}-${var.postgresql_env}"
   }
 }
 
@@ -187,6 +191,7 @@ resource "aws_kms_key" "main" {
     ProjectList     = var.postgresql_project
     DeploymentType  = var.postgresql_deployment_type
     EndDate         = var.postgresql_end_date
+    Group           = "${var.postgresql_project}-${var.postgresql_env}"
   }
 }
 
