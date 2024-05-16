@@ -23,7 +23,7 @@ resource "aws_db_instance" "blank-database" {
   final_snapshot_identifier       = var.postgresql_name
   backup_retention_period         = var.postgresql_backup_retention_period
   backup_window                   = var.postgresql_backup_window
-  replicate_source_db             = length(var.postgresql_source_snapshot_identifier) == 0 && var.postgresql_replicate_source_db == null ? var.postgresql_replicate_source_db : null
+  replicate_source_db             = length(var.postgresql_source_snapshot_identifier) == 0 && var.postgresql_replicate_source_db != null ? var.postgresql_replicate_source_db : null
   publicly_accessible             = var.postgresql_publicly_accessible
   performance_insights_enabled    = var.postgresql_performance_insights_enabled
   enabled_cloudwatch_logs_exports = ["postgresql"]
