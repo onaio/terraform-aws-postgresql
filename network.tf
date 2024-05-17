@@ -4,10 +4,11 @@ resource "aws_security_group" "firewall_rule" {
   vpc_id      = var.postgresql_vpc_id
 
   ingress {
-    from_port   = var.postgresql_port
-    to_port     = var.postgresql_port
-    protocol    = "tcp"
-    cidr_blocks = var.postgresql_firewall_rule_ingress_cidr_blocks
+    from_port       = var.postgresql_port
+    to_port         = var.postgresql_port
+    protocol        = "tcp"
+    security_groups = var.postgresql_firewall_rule_ingress_security_groups
+    cidr_blocks     = var.postgresql_firewall_rule_ingress_cidr_blocks
   }
 
   egress {
@@ -31,6 +32,7 @@ resource "aws_security_group" "firewall_rule" {
     EndDate         = var.postgresql_end_date
     ProjectList     = var.postgresql_project
     DeploymentType  = var.postgresql_deployment_type
+    Group           = "${var.postgresql_project}-${var.postgresql_env}"
   }
 }
 
@@ -45,6 +47,7 @@ resource "aws_db_subnet_group" "main" {
     ProjectList     = var.postgresql_project
     DeploymentType  = var.postgresql_deployment_type
     EndDate         = var.postgresql_end_date
+    Group           = "${var.postgresql_project}-${var.postgresql_env}"
   }
 }
 
@@ -55,5 +58,5 @@ resource "aws_route53_record" "main" {
   type            = "CNAME"
   allow_overwrite = var.allow_dns_record_overwrite
   ttl             = "300"
-  records         = [length(var.postgresql_source_snapshot_identifier) == 0 ? (length(var.postgresql_replicate_source_db) == 0 ? aws_db_instance.blank-database[0].address : aws_db_instance.replica-database[0].address) : aws_db_instance.from-snapshot[0].address]
+  records         = [length(var.postgresql_source_snapshot_identifier) == 0 ? (var.postgresql_replicate_source_db == null ? aws_db_instance.blank-database[0].address : aws_db_instance.replica-database[0].address) : aws_db_instance.from-snapshot[0].address]
 }

@@ -23,7 +23,7 @@ resource "aws_db_instance" "blank-database" {
   final_snapshot_identifier       = var.postgresql_name
   backup_retention_period         = var.postgresql_backup_retention_period
   backup_window                   = var.postgresql_backup_window
-  replicate_source_db             = length(var.postgresql_source_snapshot_identifier) == 0 && length(var.postgresql_replicate_source_db) != 0 ? var.postgresql_replicate_source_db : null
+  replicate_source_db             = length(var.postgresql_source_snapshot_identifier) == 0 && var.postgresql_replicate_source_db != null ? var.postgresql_replicate_source_db : null
   publicly_accessible             = var.postgresql_publicly_accessible
   performance_insights_enabled    = var.postgresql_performance_insights_enabled
   enabled_cloudwatch_logs_exports = ["postgresql"]
@@ -35,6 +35,7 @@ resource "aws_db_instance" "blank-database" {
     ProjectList     = var.postgresql_project
     DeploymentType  = var.postgresql_deployment_type
     EndDate         = var.postgresql_end_date
+    Group           = "${var.postgresql_project}-${var.postgresql_env}"
   }
 }
 
@@ -66,6 +67,7 @@ resource "aws_db_instance" "from-snapshot" {
     ProjectList     = var.postgresql_project
     DeploymentType  = var.postgresql_deployment_type
     EndDate         = var.postgresql_end_date
+    Group           = "${var.postgresql_project}-${var.postgresql_env}"
   }
 
   lifecycle {
@@ -86,11 +88,7 @@ resource "aws_db_instance" "replica-database" {
   identifier                      = var.postgresql_name
   allocated_storage               = var.postgresql_allocated_storage
   storage_type                    = var.postgresql_storage_type
-  engine                          = "postgres"
-  engine_version                  = var.postgresql_version
   instance_class                  = var.postgresql_instance_class
-  db_name                         = var.postgresql_db_name
-  username                        = var.postgresql_username
   parameter_group_name            = aws_db_parameter_group.main.name
   db_subnet_group_name            = aws_db_subnet_group.main.name
   deletion_protection             = var.postgresql_deletion_protection
@@ -98,7 +96,6 @@ resource "aws_db_instance" "replica-database" {
   port                            = var.postgresql_port
   copy_tags_to_snapshot           = var.postgresql_copy_tags_to_snapshot
   storage_encrypted               = var.postgresql_storage_encrypted
-  kms_key_id                      = aws_kms_key.main.arn
   vpc_security_group_ids          = [aws_security_group.firewall_rule.id]
   replicate_source_db             = var.is_promoted_to_standalone ? "" : var.postgresql_replicate_source_db
   publicly_accessible             = var.postgresql_publicly_accessible
@@ -115,6 +112,7 @@ resource "aws_db_instance" "replica-database" {
     ProjectList     = var.postgresql_project
     DeploymentType  = var.postgresql_deployment_type
     EndDate         = var.postgresql_end_date
+    Group           = "${var.postgresql_project}-${var.postgresql_env}"
   }
 }
 
@@ -175,6 +173,7 @@ resource "aws_db_parameter_group" "main" {
     ProjectList     = var.postgresql_project
     DeploymentType  = var.postgresql_deployment_type
     EndDate         = var.postgresql_end_date
+    Group           = "${var.postgresql_project}-${var.postgresql_env}"
   }
 }
 
@@ -187,6 +186,7 @@ resource "aws_kms_key" "main" {
     ProjectList     = var.postgresql_project
     DeploymentType  = var.postgresql_deployment_type
     EndDate         = var.postgresql_end_date
+    Group           = "${var.postgresql_project}-${var.postgresql_env}"
   }
 }
 
