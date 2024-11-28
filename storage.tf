@@ -207,6 +207,16 @@ resource "aws_cloudwatch_metric_alarm" "db-connections" {
   dimensions = {
     DBInstanceIdentifier = (length(var.postgresql_source_snapshot_identifier) == 0 && var.postgresql_replicate_source_db == null) ? aws_db_instance.blank-database[0].identifier : var.postgresql_replicate_source_db != null ? aws_db_instance.replica-database[0].identifier : aws_db_instance.from-snapshot[0].identifier
   }
+
+  tags = {
+    Name            = var.postgresql_name
+    OwnerList       = var.postgresql_owner
+    EnvironmentList = var.postgresql_env
+    ProjectList     = var.postgresql_project
+    DeploymentType  = var.postgresql_deployment_type
+    EndDate         = var.postgresql_end_date
+    Group           = "${var.postgresql_project}-${var.postgresql_env}"
+  }
 }
 
 resource "aws_cloudwatch_metric_alarm" "cpu_utilization_too_high" {
@@ -224,6 +234,16 @@ resource "aws_cloudwatch_metric_alarm" "cpu_utilization_too_high" {
 
   dimensions = {
     DBInstanceIdentifier = (length(var.postgresql_source_snapshot_identifier) == 0 && var.postgresql_replicate_source_db == null) ? aws_db_instance.blank-database[0].identifier : var.postgresql_replicate_source_db != null ? aws_db_instance.replica-database[0].identifier : aws_db_instance.from-snapshot[0].identifier
+  }
+
+  tags = {
+    Name            = var.postgresql_name
+    OwnerList       = var.postgresql_owner
+    EnvironmentList = var.postgresql_env
+    ProjectList     = var.postgresql_project
+    DeploymentType  = var.postgresql_deployment_type
+    EndDate         = var.postgresql_end_date
+    Group           = "${var.postgresql_project}-${var.postgresql_env}"
   }
 }
 
@@ -243,6 +263,16 @@ resource "aws_cloudwatch_metric_alarm" "free_storage_space_too_low" {
   dimensions = {
     DBInstanceIdentifier = (length(var.postgresql_source_snapshot_identifier) == 0 && var.postgresql_replicate_source_db == null) ? aws_db_instance.blank-database[0].identifier : var.postgresql_replicate_source_db != null ? aws_db_instance.replica-database[0].identifier : aws_db_instance.from-snapshot[0].identifier
   }
+
+  tags = {
+    Name            = var.postgresql_name
+    OwnerList       = var.postgresql_owner
+    EnvironmentList = var.postgresql_env
+    ProjectList     = var.postgresql_project
+    DeploymentType  = var.postgresql_deployment_type
+    EndDate         = var.postgresql_end_date
+    Group           = "${var.postgresql_project}-${var.postgresql_env}"
+  }
 }
 
 resource "aws_cloudwatch_metric_alarm" "freeable_memory_too_low" {
@@ -260,6 +290,16 @@ resource "aws_cloudwatch_metric_alarm" "freeable_memory_too_low" {
 
   dimensions = {
     DBInstanceIdentifier = (length(var.postgresql_source_snapshot_identifier) == 0 && var.postgresql_replicate_source_db == null) ? aws_db_instance.blank-database[0].identifier : var.postgresql_replicate_source_db != null ? aws_db_instance.replica-database[0].identifier : aws_db_instance.from-snapshot[0].identifier
+  }
+
+  tags = {
+    Name            = var.postgresql_name
+    OwnerList       = var.postgresql_owner
+    EnvironmentList = var.postgresql_env
+    ProjectList     = var.postgresql_project
+    DeploymentType  = var.postgresql_deployment_type
+    EndDate         = var.postgresql_end_date
+    Group           = "${var.postgresql_project}-${var.postgresql_env}"
   }
 }
 
@@ -289,5 +329,15 @@ resource "aws_cloudwatch_metric_alarm" "slow_query_metric_alarm" {
   threshold           = var.postgresql_slow_query_threshold
   statistic           = var.postgresql_slow_query_statistic
   alarm_actions       = var.postgresql_alarm_actions
-  tags                = { notification_type = var.postgresql_slow_query_notification_type, severity = var.postgresql_slow_query_severity }
+  tags = {
+    Name              = var.postgresql_name
+    OwnerList         = var.postgresql_owner
+    EnvironmentList   = var.postgresql_env
+    ProjectList       = var.postgresql_project
+    DeploymentType    = var.postgresql_deployment_type
+    EndDate           = var.postgresql_end_date
+    Group             = "${var.postgresql_project}-${var.postgresql_env}"
+    notification_type = var.postgresql_slow_query_notification_type
+    severity          = var.postgresql_slow_query_severity
+  }
 }
