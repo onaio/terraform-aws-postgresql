@@ -340,4 +340,8 @@ resource "aws_cloudwatch_metric_alarm" "slow_query_metric_alarm" {
     notification_type = var.postgresql_slow_query_notification_type
     severity          = var.postgresql_slow_query_severity
   }
+
+  dimensions = {
+    DBInstanceIdentifier = (length(var.postgresql_source_snapshot_identifier) == 0 && var.postgresql_replicate_source_db == null) ? aws_db_instance.blank-database[0].identifier : var.postgresql_replicate_source_db != null ? aws_db_instance.replica-database[0].identifier : aws_db_instance.from-snapshot[0].identifier
+  }
 }
