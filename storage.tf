@@ -310,9 +310,11 @@ resource "aws_cloudwatch_log_metric_filter" "slow_query_metric_filter" {
   name           = var.postgresql_slow_query_metric_filter_name
   pattern        = join("?", var.postgresql_slow_query_pattern)
   metric_transformation {
-    name      = var.postgresql_slow_query_metric_filter_name
-    namespace = var.postgresql_slow_query_metric_namespace
-    value     = var.postgresql_slow_query_metric_value
+    name          = var.postgresql_slow_query_metric_filter_name
+    namespace     = var.postgresql_slow_query_metric_namespace
+    value         = var.postgresql_slow_query_metric_value
+    unit          = var.postgresql_slow_query_metric_unit
+    default_value = var.postgresql_slow_query_metric_default_value
   }
 }
 
@@ -341,7 +343,4 @@ resource "aws_cloudwatch_metric_alarm" "slow_query_metric_alarm" {
     severity          = var.postgresql_slow_query_severity
   }
 
-  dimensions = {
-    DBInstanceIdentifier = (length(var.postgresql_source_snapshot_identifier) == 0 && var.postgresql_replicate_source_db == null) ? aws_db_instance.blank-database[0].identifier : var.postgresql_replicate_source_db != null ? aws_db_instance.replica-database[0].identifier : aws_db_instance.from-snapshot[0].identifier
-  }
 }
