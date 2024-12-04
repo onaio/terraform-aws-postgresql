@@ -281,6 +281,18 @@ variable "postgresql_slow_query_metric_value" {
   default     = 1
 }
 
+variable "postgresql_slow_query_metric_unit" {
+  type        = string
+  description = "Unit of measurement"
+  default     = "Count"
+}
+
+variable "postgresql_slow_query_metric_default_value" {
+  type        = number
+  description = "The default value is published to the metric when the pattern does not match. If you leave this blank, no value is published when there is no match"
+  default     = 0
+}
+
 variable "postgresql_slow_query_pattern" {
   type        = list(string)
   description = "The terms or pattern to match in your log events to create metrics"
